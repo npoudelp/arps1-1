@@ -12,3 +12,12 @@ class Fields(models.Model):
 
     def __str__(self):
         return self.name
+    
+
+class FrequentQuestions(models.Model):
+    question = models.TextField(null=False, blank=False)
+    answer = models.TextField(null=False, blank=False)
+    date = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.question
