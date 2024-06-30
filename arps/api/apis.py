@@ -2,8 +2,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from .models import Fields
-from .serializers import FieldsSerializer
+from .gemini import ask_gemini
+from .models import Fields, FrequentQuestions
+from .serializers import FieldsSerializer, FrequentQuestionsSerializer
 
 
 class AddField(APIView):
@@ -53,3 +54,43 @@ class GetFieldById(APIView):
             return Response(serializer.data, status=200)
         except Fields.DoesNotExist:
             return Response({"error": "Field not found"}, status=404)
+        
+
+#  get gemini response
+class GetGeminiResponse(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request):
+        question = request.data.get("question")
+        if question is None:
+            return Response({"error": "Question not provided"}, status=400)
+        try:
+            response = ask_gemini(question)
+            return Response({
+                "response": response,
+                "question": question
+            }, status=200)
+        except:
+            return Response({"error": "Question not recognised"}, status=400)
+        
+
+# add frequent questions
+class AddFrequentQuestion(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request):
+        serializer = FrequentQuestionsSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
+    
+
+# get frequent questions
+class GetFrequentQuestions(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request):
+        questions = FrequentQuestions.objects.all().order_by('-id')
+        serializer = FrequentQuestionsSerializer(questions, many=True)
+        return Response(serializer.data, status=200)
