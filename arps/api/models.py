@@ -4,6 +4,7 @@ from django.db import models
 
 class Fields(models.Model):
     name = models.CharField(max_length=35, default='Demo Field', blank=False)
+    crop = models.CharField(max_length=35, default="None" ,null=True, blank=True)
     coordinates = models.TextField(null=False, blank=False)
     nitrogen = models.FloatField(null=True, blank=True)
     potassium = models.FloatField(null=True, blank=True)
