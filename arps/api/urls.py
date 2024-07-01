@@ -7,7 +7,8 @@ from .apis import (
     GetGeminiResponse,
     AddFrequentQuestion,
     GetFrequentQuestions,
-    DeleteField
+    DeleteField,
+    RecomendCrop
 )
 
 from rest_framework_simplejwt.views import (
@@ -34,4 +35,7 @@ urlpatterns = [
     # frequent questions url
     path('frequent-questions/add/', AddFrequentQuestion.as_view(), name='add_frequent_question'),
     path('frequent-questions/get/', GetFrequentQuestions.as_view(), name='get_frequent_questions'),
+
+    # recomend crop
+    path('recomend-crop/', RecomendCrop.as_view(), name='recomend_crop'),
 ]
