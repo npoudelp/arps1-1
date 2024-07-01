@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from .gemini import ask_gemini
 from .models import Fields, FrequentQuestions
 from .serializers import FieldsSerializer, FrequentQuestionsSerializer
+from .recomend import recomendCrop
 
 
 class AddField(APIView):
@@ -108,3 +109,31 @@ class GetFrequentQuestions(APIView):
         questions = FrequentQuestions.objects.all().order_by('-id')
         serializer = FrequentQuestionsSerializer(questions, many=True)
         return Response(serializer.data, status=200)
+    
+
+#get prediction
+class RecomendCrop(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request):
+        id = request.data.get("id")
+        district = request.data.get("district")
+        if id is None or district is None:
+            return Response({"error": "Data not provided"}, status=400)
+        try:
+            getNPK = Fields.objects.get(id=id)
+            N = getNPK.nitrogen
+            P = getNPK.phosphorus
+            K = getNPK.potassium
+            ph = getNPK.ph
+
+            if N is None or P is None or K is None or ph is None or ph == 0 or district is None:
+                return Response({"error": "Data not provided or not availabale, check fields"}, status=400)
+
+            crops = recomendCrop(N, P, K, ph, district)
+            return Response({
+                "crops": crops
+            }, status=200)
+
+        except:
+            return Response({"error": "Prediction failed"}, status=400)
