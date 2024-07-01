@@ -9,6 +9,7 @@ class Fields(models.Model):
     nitrogen = models.FloatField(null=True, blank=True)
     potassium = models.FloatField(null=True, blank=True)
     phosphorus = models.FloatField(null=True, blank=True)
+    ph = models.FloatField(null=True, blank=True)
 
     def __str__(self):
         return self.name
