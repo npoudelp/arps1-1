@@ -1,5 +1,14 @@
 from django.urls import path
-from .apis import AddField, GetField, UpdateField, GetFieldById, GetGeminiResponse, AddFrequentQuestion, GetFrequentQuestions
+from .apis import (
+    AddField,
+    GetField,
+    UpdateField,
+    GetFieldById,
+    GetGeminiResponse,
+    AddFrequentQuestion,
+    GetFrequentQuestions,
+    DeleteField
+)
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -17,7 +26,8 @@ urlpatterns = [
     path('field/get/', GetField.as_view(), name='get_field'),
     path('field/update/<int:id>/', UpdateField.as_view(), name='update_field'),
     path('field/get/id/<int:id>/', GetFieldById.as_view(), name='get_field_by_id'),
-
+    path('field/delete/<int:id>/', DeleteField.as_view(), name='delete_field'),
+    
     # gemini url
     path('assistance/', GetGeminiResponse.as_view(), name='get_gemini_response'),
 
