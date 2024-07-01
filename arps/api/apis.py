@@ -22,7 +22,7 @@ class GetField(APIView):
     permission_classes = [IsAuthenticated]
     
     def get(self, request):
-        fields = Fields.objects.all().order_by('-id')
+        fields = Fields.objects.all().order_by('id')
         serializer = FieldsSerializer(fields, many=True)
         return Response(serializer.data, status=200)
     
@@ -56,6 +56,20 @@ class GetFieldById(APIView):
             return Response({"error": "Field not found"}, status=404)
         
 
+#delete field data
+class DeleteField(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def delete(self, request, id):
+        try:
+            field = Fields.objects.get(id=id)
+            field.delete()
+            return Response({"message": "Field deleted"}, status=204)
+        except Fields.DoesNotExist:
+            return Response({"error": "Field not found"}, status=404)
+
+
+
 #  get gemini response
 class GetGeminiResponse(APIView):
     permission_classes = [IsAuthenticated]
@@ -84,7 +98,7 @@ class AddFrequentQuestion(APIView):
             serializer.save()
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
-    
+
 
 # get frequent questions
 class GetFrequentQuestions(APIView):
