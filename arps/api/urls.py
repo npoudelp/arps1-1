@@ -19,6 +19,7 @@ from .apis import (
     GetIrrigation,
     AddHarvest,
     GetHarvest,
+    GetAllFieldActivities,
 
     DeleteAllFrequentQuestions,
 )
@@ -71,6 +72,9 @@ urlpatterns = [
     path('harvest/add/', AddHarvest.as_view(), name='add_harvest'),
     path('harvest/get/<int:id>/', GetHarvest.as_view(), name='get_harvest'),
     
+    # get all field activities
+    path('field-activities/all/<int:id>/', GetAllFieldActivities.as_view(), name='get_all_field_activities'),
+
     # delete answers
     path('frequent-questions/delete/', DeleteAllFrequentQuestions.as_view(), name='delete_all_frequent_questions')
 ]
