@@ -8,7 +8,19 @@ from .apis import (
     AddFrequentQuestion,
     GetFrequentQuestions,
     DeleteField,
-    RecomendCrop
+    RecomendCrop,
+    AddPlantation,
+    GetPlantation,
+    AddFertilizer,
+    GetFertilizer,
+    AddPestControl,
+    GetPestControl,
+    AddIrrigation,
+    GetIrrigation,
+    AddHarvest,
+    GetHarvest,
+
+    DeleteAllFrequentQuestions,
 )
 
 from rest_framework_simplejwt.views import (
@@ -38,4 +50,27 @@ urlpatterns = [
 
     # recomend crop
     path('recomend-crop/', RecomendCrop.as_view(), name='recomend_crop'),
+
+    # plantation
+    path('plantation/add/', AddPlantation.as_view(), name='add_plantation'),
+    path('plantation/get/<int:id>/', GetPlantation.as_view(), name='get_plantation'),
+
+    # fertilizer
+    path('fertilizer/add/', AddFertilizer.as_view(), name='add_fertilizer'),
+    path('fertilizer/get/<int:id>/', GetFertilizer.as_view(), name='get_fertilizer'),
+
+    # pest control
+    path('pest-control/add/', AddPestControl.as_view(), name='add_pest_control'),
+    path('pest-control/get/<int:id>/', GetPestControl.as_view(), name='get_pest_control'),
+
+    # irrigation
+    path('irrigation/add/', AddIrrigation.as_view(), name='add_irrigation'),
+    path('irrigation/get/<int:id>/', GetIrrigation.as_view(), name='get_irrigation'),
+
+    # harvest
+    path('harvest/add/', AddHarvest.as_view(), name='add_harvest'),
+    path('harvest/get/<int:id>/', GetHarvest.as_view(), name='get_harvest'),
+    
+    # delete answers
+    path('frequent-questions/delete/', DeleteAllFrequentQuestions.as_view(), name='delete_all_frequent_questions')
 ]

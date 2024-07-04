@@ -35,7 +35,7 @@ tree_pipe = Pipeline(steps=[("preprocessing", transformer), ("model", DecisionTr
 tree_pipe.fit(x_train, y_train)
 y_pred = tree_pipe.predict(x_test)
 
-with open('./prediction_tree_model.pkl', 'wb') as file:
+with open(os.path.join(static_dir ,'prediction_tree_model.pkl'), 'wb') as file:
     pickle.dump(tree_pipe, file)
 
 def getNewData(N, P, K, temperature, humidity, ph, rainfall):
