@@ -4,7 +4,7 @@ import google.generativeai as genai
 import os
 
 def ask_gemini(question):
-    genai.configure(api_key="AIzaSyBxJfF_KThZOUdzy_GBN1zOAABPd-n4rUc")
+    genai.configure(api_key="AIzaSyBt4sUTtKp0wRl_K48Gz_EcpWCUpxDhF9c")
 
     model = genai.GenerativeModel('gemini-1.5-flash')
     chat = model.start_chat(history=[])
