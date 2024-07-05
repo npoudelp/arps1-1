@@ -117,14 +117,15 @@ class GetGeminiResponse(APIView):
                     "question": searchSerialized.data["question"]
                 }, status=200)
             except:
-                response = ask_gemini(question)
-                return Response({
-                    "newquestion": True,
-                    "response": response,
-                    "question": question
-                }, status=200)
-
-            
+                try:
+                    response = ask_gemini(question)
+                    return Response({
+                        "newquestion": True,
+                        "response": response,
+                        "question": question
+                    }, status=200)
+                except Exception as e:
+                    return Response({"error": e}, status=400)            
         except:
             return Response({"error": "Question not recognised"}, status=400)
         
