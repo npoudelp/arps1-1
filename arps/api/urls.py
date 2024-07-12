@@ -20,6 +20,9 @@ from .apis import (
     AddHarvest,
     GetHarvest,
     GetAllFieldActivities,
+    ScrapeData,
+    GetPinnedLocation,
+    SetPinnedLocation,
 
     DeleteAllFrequentQuestions,
 )
@@ -75,6 +78,13 @@ urlpatterns = [
     # get all field activities
     path('field-activities/all/<int:id>/', GetAllFieldActivities.as_view(), name='get_all_field_activities'),
 
-    # delete answers
+    # scrape data
+    path('scrape/<str:location>/', ScrapeData.as_view(), name='scrape_data'),
+
+    # pinned location
+    path('pinned-location/get/', GetPinnedLocation.as_view(), name='get_pinned_location'),
+    path('pinned-location/add/', SetPinnedLocation.as_view(), name='set_pinned_location'),
+
+    # delete answers #############for development and test purpose only
     path('frequent-questions/delete/', DeleteAllFrequentQuestions.as_view(), name='delete_all_frequent_questions')
 ]
