@@ -71,3 +71,10 @@ class Harvest(models.Model):
     
     def __str__(self):
         return self.field.name
+    
+
+class PinnedLocation(models.Model):
+    location = models.CharField(max_length=35, null=False, blank=False)
+    
+    def __str__(self):
+        return self.location
