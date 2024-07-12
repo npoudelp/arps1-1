@@ -7,6 +7,7 @@ from .models import (
     PestControl,
     Irrigation,
     Harvest,
+    PinnedLocation,
 )
 
 class FieldsSerializer(serializers.ModelSerializer):
@@ -48,4 +49,10 @@ class IrrigationSerializer(serializers.ModelSerializer):
 class HarvestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Harvest
+        fields = '__all__'
+
+
+class PinnedLocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PinnedLocation
         fields = '__all__'
