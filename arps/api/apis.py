@@ -12,6 +12,7 @@ from .models import (
     PestControl,
     Irrigation,
     Harvest,
+    PinnedLocation,
     )
 from .serializers import (
     FieldsSerializer,
@@ -21,9 +22,11 @@ from .serializers import (
     PestControlSerializer,
     IrrigationSerializer,
     HarvestSerializer,
+    PinnedLocationSerializer,
 
 )
 from .recomend import recomendCrop
+from . import scrape
 
 
 class AddField(APIView):
@@ -360,6 +363,47 @@ class GetAllFieldActivities(APIView):
         except:
             return Response({"error": "Failed to get field activities"}, status=400)    
 
+
+
+# scrape and get data
+class ScrapeData(APIView):
+    permission_classes = []
+    
+    def get(self, request, location):
+        try:
+            if location == "all":
+                return Response({"data": scrape.getAll()}, status=200)
+            else:
+                return Response({"data": scrape.getFrom(location)}, status=200)
+        except:
+            return Response({"error": "Failed to scrape data"}, status=400)
+
+
+# set pinned location
+class SetPinnedLocation(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request):
+        try:
+            serializer = PinnedLocationSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=200)
+            return Response(serializer.errors, status=400)
+        except:
+            return Response({"error": "Failed to save pinned location"}, status=400)
+
+# get pinned location
+class GetPinnedLocation(APIView):
+    permission_classes = []
+    
+    def get(self, request):
+        try:
+            pinned = PinnedLocation.objects.all().order_by('-id')[0]
+            serializer = PinnedLocationSerializer(pinned, many=False)
+            return Response(serializer.data, status=200)
+        except:
+            return Response({"error": "Failed to get pinned location"}, status=400)
 
 
 # delete all qna
