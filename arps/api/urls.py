@@ -23,8 +23,6 @@ from .apis import (
     ScrapeData,
     GetPinnedLocation,
     SetPinnedLocation,
-
-    DeleteAllFrequentQuestions,
 )
 
 from rest_framework_simplejwt.views import (
@@ -32,6 +30,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
     TokenVerifyView
 )
+
 
 urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
@@ -84,7 +83,4 @@ urlpatterns = [
     # pinned location
     path('pinned-location/get/', GetPinnedLocation.as_view(), name='get_pinned_location'),
     path('pinned-location/add/', SetPinnedLocation.as_view(), name='set_pinned_location'),
-
-    # delete answers #############for development and test purpose only
-    path('frequent-questions/delete/', DeleteAllFrequentQuestions.as_view(), name='delete_all_frequent_questions')
-]
+]   

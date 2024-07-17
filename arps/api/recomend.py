@@ -62,3 +62,6 @@ def recomendCrop(N, P, K, ph, location):
     K = float(K)
     ph = float(ph)
     return predictCrop(getNewData(N, P, K, temperature, humidity, ph, rainfall))
+
+
+# ['chickpea', 'muskmelon', 'maize', 'papaya', 'banana', 'grapes', 'kidneybeans', 'rice', 'mothbeans', 'apple', 'jute', 'mango', 'cotton', 'pomegranate', 'coffee', 'blackgram', 'lentil', 'coconut', 'watermelon', 'orange', 'mungbean', 'pigeonpeas']

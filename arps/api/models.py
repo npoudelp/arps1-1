@@ -10,7 +10,8 @@ class Fields(models.Model):
     potassium = models.FloatField(null=True, blank=True)
     phosphorus = models.FloatField(null=True, blank=True)
     ph = models.FloatField(null=True, blank=True)
-    harvested = models.BooleanField(default=True, blank=True, null=True)
+    harvested = models.BooleanField(default=True, blank=True, null=False)
+    hidden = models.BooleanField(default=False, blank=True, null=False)
 
     def __str__(self):
         return self.name

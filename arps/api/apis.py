@@ -29,13 +29,27 @@ from .recomend import recomendCrop
 from . import scrape
 
 
+# check if filed is planted
+def checkFieldPlanted(id):
+    try:
+        checkField = Fields.objects.get(id=id)
+        if checkField.harvested == False:
+            return True
+        return False
+    except:
+        return "error"
+
+
+
 class AddField(APIView):
     permission_classes = [IsAuthenticated]
     
     def post(self, request):
-        serializer = FieldsSerializer(data=request.data)
+        data = request.data.copy()
+        data['harvested'] = True
+        serializer = FieldsSerializer(data=data)
         if serializer.is_valid():
-            serializer.harvested = True
+
             serializer.save()
             return Response(serializer.data, status=200)
         return Response(serializer.errors, status=400)
@@ -45,7 +59,7 @@ class GetField(APIView):
     permission_classes = [IsAuthenticated]
     
     def get(self, request):
-        fields = Fields.objects.all().order_by('id')
+        fields = Fields.objects.filter(hidden=False).order_by('id')
         serializer = FieldsSerializer(fields, many=True)
         return Response(serializer.data, status=200)
     
@@ -79,7 +93,7 @@ class GetFieldById(APIView):
     
     def get(self, request, id):
         try:
-            field = Fields.objects.get(id=id)
+            field = Fields.objects.get(id=id, hidden=False)
             serializer = FieldsSerializer(field)
             return Response(serializer.data, status=200)
         except Fields.DoesNotExist:
@@ -90,13 +104,15 @@ class GetFieldById(APIView):
 class DeleteField(APIView):
     permission_classes = [IsAuthenticated]
     
-    def delete(self, request, id):
+    def put(self, request, id):
         try:
+            if checkFieldPlanted(id):
+                return Response({"error": "Field planted, harvest it to delete"}, status=400)
+
             field = Fields.objects.get(id=id)
-            if field.harvested == False:
-                return Response({"error": "Field not harvested, harvest it to delete"}, status=400)
-            field.delete()
-            return Response({"message": "Field deleted"}, status=204)
+            field.hidden = True
+            field.save()
+            return Response({"message": "Field deleted"}, status=200)
         except Fields.DoesNotExist:
             return Response({"error": "Field not found"}, status=404)
 
@@ -181,7 +197,8 @@ class RecomendCrop(APIView):
 
         except:
             return Response({"error": "Prediction failed"}, status=400)
-        
+
+
 
 # add plantation info
 class AddPlantation(APIView):
@@ -222,6 +239,9 @@ class AddFertilizer(APIView):
     
     def post(self, request):
         try:
+            # if not checkFieldPlanted(request.data.get("field")):
+            #     return Response({"error": "Field not planted, plant crop to add fertilizer"}, status=400)
+
             serializer = FertilizerAdditionSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()
@@ -249,6 +269,9 @@ class AddPestControl(APIView):
     
     def post(self, request):
         try:
+            # if not checkFieldPlanted(request.data.get("field")):
+            #     return Response({"error": "Field not planted, plant crop to add pest control"}, status=400)
+
             serializer = PestControlSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()
@@ -406,15 +429,20 @@ class GetPinnedLocation(APIView):
             return Response({"error": "Failed to get pinned location"}, status=400)
 
 
-# delete all qna
-class DeleteAllFrequentQuestions(APIView):
-    permission_classes = []
+# get plantation status
+class GetPlantationStatus(APIView):
+    permission_classes = [IsAuthenticated]
     
-    def delete(self, request):
+    def get(self, request, id):
         try:
-            FrequentQuestions.objects.all().delete()
-            return Response({"message": "All questions deleted"}, status=204)
+            checkField = Fields.objects.get(id=id)
+            return Response({"status": checkField.harvested}, status=200)
         except:
-            return Response({"error": "Failed to delete questions"}, status=400)
+            return Response({"error": "Failed to get plantation status"}, status=400)
         
-# delete all fields
+
+
+
+
+
+
