@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_6%7h1ek67gspd)n_oxye099iv0hd=7)k1mjl)9i4(p@8z@_o@'
+SECRET_KEY = 'q)&lau(uk6*lcc7fy_hs!^*m&k!_eeq7cin3uy0sg$)z9co#r='
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -152,6 +152,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+API_KEY_FOR_IOT = '3-_tn-o==@u_2f4)s^ao4nnw0c+uqrv*cvj9=og1t+6sjhkfz+'
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
